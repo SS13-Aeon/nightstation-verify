@@ -599,7 +599,9 @@ impl VerificationService {
                     "begin_verification" => {
                         let user = &interaction.user;
 
-                        let Some(VerificationStatus::Greeted { greeting_id }) = self.get_status(&user.id).await else {
+                        let Some(VerificationStatus::Greeted { greeting_id }) =
+                            self.get_status(&user.id).await
+                        else {
                             return Ok(());
                         };
 
@@ -631,7 +633,11 @@ impl VerificationService {
                     "form_answer" => {
                         let user = &interaction.user;
 
-                        let Some(VerificationStatus::Pending { mut form_data, form_idx }) = self.get_status(&user.id).await else {
+                        let Some(VerificationStatus::Pending {
+                            mut form_data,
+                            form_idx,
+                        }) = self.get_status(&user.id).await
+                        else {
                             return Ok(());
                         };
 
@@ -674,8 +680,17 @@ impl VerificationService {
                             return Ok(());
                         };
 
-                        let Some(VerificationStatus::Pending { form_data: _, form_idx: _ }) = self.get_status(&member.user.id).await else {
-                            return Ok(());
+                        let status = self.get_status(&member.user.id).await;
+
+                        match status {
+                            Some(
+                                VerificationStatus::Greeted { greeting_id: _ }
+                                | VerificationStatus::Pending {
+                                    form_data: _,
+                                    form_idx: _,
+                                },
+                            ) => (),
+                            _ => return Ok(()),
                         };
 
                         if interaction.data.components.len() != 1
@@ -684,7 +699,12 @@ impl VerificationService {
                             return Ok(());
                         }
 
-                        let serenity::ActionRowComponent::InputText(serenity::InputText { kind: _, custom_id, value}) = &interaction.data.components[0].components[0] else {
+                        let serenity::ActionRowComponent::InputText(serenity::InputText {
+                            kind: _,
+                            custom_id,
+                            value,
+                        }) = &interaction.data.components[0].components[0]
+                        else {
                             return Ok(());
                         };
 

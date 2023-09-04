@@ -3,7 +3,7 @@ name = "nightstation-verify"
 description = "Nightstation verification bot"
 authors = ["Nightstation contributors"]
 license = "AGPL-3.0-or-later"
-version = "1.0.0"
+version = "1.0.1"
 edition = "2021"
 
 [dependencies]
