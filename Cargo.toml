@@ -1,0 +1,23 @@
+[package]
+name = "nightstation-verify"
+description = "Nightstation verification bot"
+authors = ["Nightstation contributors"]
+license = "AGPL-3.0-or-later"
+version = "1.0.0"
+edition = "2021"
+
+[dependencies]
+clap = { version = "4.4.2", features = ["derive", "cargo"] }
+dialoguer = "0.10.4"
+log = "0.4.20"
+poise = "0.5.5"
+ron = "0.8.1"
+serde = { version = "1.0.186", features = ["derive"] }
+stderrlog = "0.5.4"
+tokio = { version = "1.32.0", features = ["full"] }
+url = { version = "2.4.1", features = ["serde"] }
+
+[dependencies.serenity]
+version = "0.11.6"
+default-features = false
+features = ["builder", "cache", "client", "gateway", "http", "model", "utils"]
