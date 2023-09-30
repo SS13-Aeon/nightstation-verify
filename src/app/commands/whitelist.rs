@@ -53,7 +53,7 @@ pub async fn list(ctx: Context<'_>) -> Result<(), Error> {
         })
         .collect();
 
-    if list.len() == 0 {
+    if list.is_empty() {
         ctx.send(|b| b.ephemeral(true).content("Whitelist is empty"))
             .await?;
 

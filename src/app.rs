@@ -82,7 +82,7 @@ impl<'a> App<'a> {
                 log::info!(
                     "Storing service data in {}",
                     fs::canonicalize(self.paths.data)
-                        .map_err(|e| Error::DataDir(e))?
+                        .map_err(Error::DataDir)?
                         .display()
                 );
             }
@@ -90,7 +90,7 @@ impl<'a> App<'a> {
                 log::info!(
                     "Storing service data in {}",
                     fs::canonicalize(self.paths.data)
-                        .map_err(|e| Error::DataDir(e))?
+                        .map_err(Error::DataDir)?
                         .display()
                 );
             }
@@ -102,7 +102,7 @@ impl<'a> App<'a> {
         let whitelist = Arc::new(WhitelistService::new(&self.config.whitelist_path));
         whitelist.load().await?;
         let whitelist_path =
-            fs::canonicalize(&self.config.whitelist_path).map_err(|e| Error::DataDir(e))?;
+            fs::canonicalize(&self.config.whitelist_path).map_err(Error::DataDir)?;
         log::info!("Whitelist loaded from {}", whitelist_path.display());
 
         let ckey = Arc::new(CkeyService::new(self.paths.data));

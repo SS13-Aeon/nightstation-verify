@@ -116,9 +116,7 @@ impl VerificationService {
             };
             let reader = BufReader::new(file);
 
-            Ok(Some(
-                ron::de::from_reader(reader).map_err(|e| Error::Read(e))?,
-            ))
+            Ok(Some(ron::de::from_reader(reader).map_err(Error::Read)?))
         })
         .await
         .expect("Thread panicked")?;
@@ -143,9 +141,9 @@ impl VerificationService {
             let mut writer = BufWriter::new(file);
 
             ron::ser::to_writer_pretty(&mut writer, &value, PrettyConfig::default())
-                .map_err(|e| Error::Write(e))?;
+                .map_err(Error::Write)?;
 
-            Ok(writer.flush().map_err(|e| Error::Write(e.into()))?)
+            writer.flush().map_err(|e| Error::Write(e.into()))
         })
         .await
         .expect("Thead panicked")
@@ -226,7 +224,7 @@ impl VerificationService {
         member
             .add_role(sc, verified_role_id)
             .await
-            .map_err(|e| Error::GrantRole(e))?;
+            .map_err(Error::GrantRole)?;
 
         Ok(())
     }
@@ -254,7 +252,7 @@ impl VerificationService {
             None => {
                 let message = greeting_channel_id
                     .send_message(sc, |b| {
-                        b.allowed_mentions(|b| b.users(&[user.id]))
+                        b.allowed_mentions(|b| b.users([user.id]))
                             .content(format!("{user}: {greeting_message}"))
                             .components(|b| {
                                 b.create_action_row(|b| {
@@ -267,7 +265,7 @@ impl VerificationService {
                             })
                     })
                     .await
-                    .map_err(|e| SendGreetingError::Discord(e))?;
+                    .map_err(SendGreetingError::Discord)?;
 
                 self.set_status(
                     user.id,

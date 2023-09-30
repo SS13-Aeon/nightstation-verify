@@ -56,9 +56,7 @@ impl CkeyService {
             };
             let reader = BufReader::new(file);
 
-            Ok(Some(
-                ron::de::from_reader(reader).map_err(|e| Error::Read(e))?,
-            ))
+            Ok(Some(ron::de::from_reader(reader).map_err(Error::Read)?))
         })
         .await
         .expect("Thread panicked")?;
@@ -83,9 +81,9 @@ impl CkeyService {
             let mut writer = BufWriter::new(file);
 
             ron::ser::to_writer_pretty(&mut writer, &value, PrettyConfig::default())
-                .map_err(|e| Error::Write(e))?;
+                .map_err(Error::Write)?;
 
-            Ok(writer.flush().map_err(|e| Error::Write(e.into()))?)
+            writer.flush().map_err(|e| Error::Write(e.into()))
         })
         .await
         .expect("Thread panicked")
@@ -129,7 +127,7 @@ impl CkeyService {
     }
 
     pub async fn get_ckey(&self, id: &UserId) -> Option<Ckey> {
-        self.ckeys.read().await.get(id).map(|str| Ckey::from(str))
+        self.ckeys.read().await.get(id).map(Ckey::from)
     }
 
     pub async fn get_user(&self, ckey: &Ckey) -> Option<UserId> {

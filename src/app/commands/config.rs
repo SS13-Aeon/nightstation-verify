@@ -106,7 +106,7 @@ pub async fn config_greeting_message_ctx(
     config.config.write().await.messages.greeting = msg.content;
     config.store().await?;
 
-    ctx.send(|b| b.ephemeral(true).content(format!("Greeting message set")))
+    ctx.send(|b| b.ephemeral(true).content("Greeting message set"))
         .await?;
 
     Ok(())
@@ -201,7 +201,7 @@ pub async fn config_verified_message_ctx(
     config.config.write().await.messages.verified = msg.content;
     config.store().await?;
 
-    ctx.send(|b| b.ephemeral(true).content(format!("Verified message set")))
+    ctx.send(|b| b.ephemeral(true).content("Verified message set"))
         .await?;
 
     Ok(())
@@ -246,7 +246,7 @@ pub async fn config_rejected_message_ctx(
     config.config.write().await.messages.rejected = msg.content;
     config.store().await?;
 
-    ctx.send(|b| b.ephemeral(true).content(format!("Rejected message set")))
+    ctx.send(|b| b.ephemeral(true).content("Rejected message set"))
         .await?;
 
     Ok(())

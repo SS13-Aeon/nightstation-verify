@@ -71,7 +71,7 @@ async fn main() -> ExitCode {
                 .init()
                 .unwrap();
         }
-        3 | _ => {
+        _ => {
             stderrlog::new()
                 .show_module_names(true)
                 .verbosity(log::Level::Trace)

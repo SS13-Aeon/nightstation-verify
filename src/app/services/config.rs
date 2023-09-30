@@ -54,17 +54,14 @@ impl ConfigService {
             };
             let reader = BufReader::new(file);
 
-            Ok(Some(
-                ron::de::from_reader(reader).map_err(|e| Error::Read(e))?,
-            ))
+            Ok(Some(ron::de::from_reader(reader).map_err(Error::Read)?))
         })
         .await
         .expect("Thread panicked")?;
 
-        match config {
-            Some(config) => *self.config.write().await = config,
-            None => (),
-        };
+        if let Some(config) = config {
+            *self.config.write().await = config
+        }
 
         Ok(())
     }
@@ -79,7 +76,7 @@ impl ConfigService {
         tokio::task::spawn_blocking(move || value.store(&path))
             .await
             .expect("Thread panicked")
-            .map_err(|e| Error::Write(e))
+            .map_err(Error::Write)
     }
 
     pub async fn get(&self) -> RwLockReadGuard<'_, AppConfig> {

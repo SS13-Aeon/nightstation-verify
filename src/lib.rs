@@ -1,8 +1,8 @@
 mod app;
 mod config;
 
-pub const SOURCE: &'static str = "https://github.com/SS13-Aeon/nightstation-verify";
-pub const COPYRIGHT: &'static str = r#"Nightstation verification bot
+pub const SOURCE: &str = "https://github.com/SS13-Aeon/nightstation-verify";
+pub const COPYRIGHT: &str = r#"Nightstation verification bot
 Copyright (C) 2023  Nightstation contributors
 
 This program is free software: you can redistribute it and/or modify

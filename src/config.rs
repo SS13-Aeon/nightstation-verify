@@ -108,9 +108,9 @@ impl AppConfig {
                 let config = wizard::run().await?;
                 config.store(path)?;
 
-                return Ok(config);
+                Ok(config)
             }
-            Err(e) => return Err(e.into()),
+            Err(e) => Err(e.into()),
         }
     }
 

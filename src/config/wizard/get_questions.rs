@@ -287,7 +287,7 @@ impl<T: Theme> Wizard<T> {
             .interact_text()
             .unwrap();
 
-        let questions = QuestionsWizard::new(&self).run();
+        let questions = QuestionsWizard::new(self).run();
 
         (ckey_prompt, questions)
     }
